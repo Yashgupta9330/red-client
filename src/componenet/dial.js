@@ -1,0 +1,122 @@
+"use client"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useState } from "react"
+
+
+export function DialogDemo() {
+
+ const [name,setName]=useState('');
+ const [phone,setPhone]=useState('');
+ const [email,setEmail]=useState('');
+ const [hobby,setHobby]=useState('');
+ 
+ const handlesubmit=async(e)=>{
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:4000/add', { // Check this URL
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, phone, hobby }),
+      });
+      console.log(response)
+      if (!response.ok) {
+        alert(response.message)
+        throw new Error('Failed to add user');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      alert('Data saved successfully')
+      setName('');
+      setPhone('');
+      setEmail('');
+      setHobby('');
+      alert('Data saved successfully')
+    } 
+    catch (error) {
+      alert('Failed to save data')
+      console.error('Error:', error);
+    }
+
+ }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">Add Data</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>ADD Data</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handlesubmit}> 
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input
+              id="name"
+              value={name}
+              className="col-span-3"
+              onChange={(e)=>setName(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Phone No
+            </Label>
+            <Input
+              id="username"
+              onChange={(e)=>setPhone(e.target.value)}
+              className="col-span-3"
+              value={phone}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Email
+            </Label>
+            <Input
+              id="username"
+              onChange={(e)=>setEmail(e.target.value)}
+              className="col-span-3"
+              value={email}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Hobbies
+            </Label>
+            <Input
+              id="username"
+              onChange={(e)=>setHobby(e.target.value)}
+              className="col-span-3"
+              value={hobby}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit"> Save changes </Button>
+        </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
