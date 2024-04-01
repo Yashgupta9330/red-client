@@ -34,7 +34,7 @@ export function DialogDemo({setUsers}) {
     });
 
     if (!response.ok) {
-      const errorMessage = await response.text().message;
+      const errorMessage = await response.text();
       toast.error(`${errorMessage}`, {
         position: "top-center",
         autoClose: 5000,
@@ -60,10 +60,10 @@ export function DialogDemo({setUsers}) {
     setUsers(updatedData.users);
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Failed to save data", {
+  /*  toast.error("Failed to save data", {
       position: "top-center",
       autoClose: 5000,
-    });  
+    });   */
   }
 };
 
