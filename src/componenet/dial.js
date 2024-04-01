@@ -12,46 +12,60 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import { toast } from "react-toastify"
 
 
-export function DialogDemo() {
+export function DialogDemo({setUsers}) {
 
  const [name,setName]=useState('');
  const [phone,setPhone]=useState('');
  const [email,setEmail]=useState('');
  const [hobby,setHobby]=useState('');
  
- const handlesubmit=async(e)=>{
-    e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:4000/add', { // Check this URL
-      method: 'POST',
+ const handlesubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch("http://localhost:4000/add", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, email, phone, hobby }),
-      });
-      console.log(response)
-      if (!response.ok) {
-        alert(response.message)
-        throw new Error('Failed to add user');
-      }
+    });
 
-      const data = await response.json();
-      console.log(data);
-      alert('Data saved successfully')
-      setName('');
-      setPhone('');
-      setEmail('');
-      setHobby('');
-      alert('Data saved successfully')
-    } 
-    catch (error) {
-      alert('Failed to save data')
-      console.error('Error:', error);
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      toast.error(`${errorMessage}`, {
+        position: "top-center",
+        autoClose: 5000,
+      });  
+      throw new Error("Failed to add user");
     }
 
- }
+    const data = await response.json();
+    console.log(data);
+    toast.success('Data saved successfully', {
+      position: "top-center",
+      autoClose: 5000,
+    });  
+    setName("");
+    setPhone("");
+    setEmail("");
+    setHobby("");
+    const updatedResponse = await fetch("http://localhost:4000/list");
+    if (!updatedResponse.ok) {
+      throw new Error("Failed to fetch updated user list");
+    }
+    const updatedData = await updatedResponse.json();
+    setUsers(updatedData.users);
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Failed to save data", {
+      position: "top-center",
+      autoClose: 5000,
+    });  
+  }
+};
 
   return (
     <Dialog>
