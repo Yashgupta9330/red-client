@@ -20,7 +20,7 @@ export default function Home() {
     console.log(selectedEmails)
     setSends(true)
     try {
-      const response = await fetch("http://localhost:4000/send", {
+      const response = await fetch("https://red-s.onrender.com/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function Home() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:4000/delete/${id}`, {
+      const response = await fetch(`https://red-s.onrender.com/delete/${id}`, {
         method: "DELETE",
       })
 
@@ -99,7 +99,7 @@ export default function Home() {
 
   const handleSave = async (id) => {
     try {
-      const response = await fetch(`http://localhost:4000/update/${id}`, {
+      const response = await fetch(`https://red-s.onrender.com/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export default function Home() {
           autoClose: 5000,
         });
         // Fetch updated user list
-        const updatedResponse = await fetch("http://localhost:4000/list")
+        const updatedResponse = await fetch("https://red-s.onrender.com/list")
         if (!updatedResponse.ok) {
           throw new Error("Failed to fetch updated user list")
         }
@@ -139,7 +139,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:4000/list")
+        const response = await fetch("https://red-s.onrender.com/list")
         if (!response.ok) {
           toast.error('Failed to fetch list', {
             position: "top-center",

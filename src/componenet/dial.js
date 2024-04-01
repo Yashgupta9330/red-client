@@ -25,7 +25,7 @@ export function DialogDemo({setUsers}) {
  const handlesubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch("http://localhost:4000/add", {
+    const response = await fetch("https://red-s.onrender.com/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export function DialogDemo({setUsers}) {
     setPhone("");
     setEmail("");
     setHobby("");
-    const updatedResponse = await fetch("http://localhost:4000/list");
+    const updatedResponse = await fetch("https://red-s.onrender.com/list");
     if (!updatedResponse.ok) {
       throw new Error("Failed to fetch updated user list");
     }
