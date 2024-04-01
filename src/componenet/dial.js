@@ -34,7 +34,7 @@ export function DialogDemo({setUsers}) {
     });
 
     if (!response.ok) {
-      const errorMessage = await response.text();
+      const errorMessage = await response.text().message;
       toast.error(`${errorMessage}`, {
         position: "top-center",
         autoClose: 5000,
