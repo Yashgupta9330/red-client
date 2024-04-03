@@ -16,6 +16,29 @@ export default function Home() {
   const [editingUserId, setEditingUserId] = useState(null)
   const [sends, setSends] = useState(false)
 
+
+   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("https://red-s.onrender.com/list")
+        if (!response.ok) {
+          toast.error('Failed to fetch list', {
+            position: "top-center",
+            autoClose: 5000,
+          });  
+          throw new Error("Failed to fetch users")
+        }
+        const data = await response.json()
+        console.log(data.users)
+        setUsers(data.users)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
   const sending = async () => {
     console.log(selectedEmails)
     setSends(true)
@@ -136,27 +159,7 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("https://red-s.onrender.com/list")
-        if (!response.ok) {
-          toast.error('Failed to fetch list', {
-            position: "top-center",
-            autoClose: 5000,
-          });  
-          throw new Error("Failed to fetch users")
-        }
-        const data = await response.json()
-        console.log(data.users)
-        setUsers(data.users)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    fetchUsers()
-  }, [])
+ 
 
   return (
     <div className="w-full min-h-screen">
